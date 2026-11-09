@@ -1,0 +1,11 @@
+@inherits LocalizedComponentBase
+@inject AppConfig Config
+@inject IPlatformService Platform
+
+<button type="button" class="btn ghost block" @onclick="OpenAsync">🌐 @L["app_open_web"]</button>
+
+@code {
+    [Parameter] public string Page { get; set; } = "";
+
+    private Task OpenAsync() => Platform.OpenUrlAsync(Config.WebUrlFor(L.Language, Page));
+}

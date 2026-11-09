@@ -1,0 +1,108 @@
+@page "/cenik"
+@inherits LocalizedComponentBase
+@inject AppConfig Config
+@inject PriceCalculator Calculator
+@inject IPlatformService Platform
+
+<PageTitle>@L["p_title"]</PageTitle>
+
+<section class="page-head"><div class="wrap">
+    <p class="eyebrow">@L["p_eyebrow"]</p>
+    <h1>@L["p_h1"]</h1>
+    <p class="lead">@L["p_lead"]</p>
+</div></section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="hint">@L["p_hint"]</div>
+        <table>
+            <thead><tr><th>@L["p_th1"]</th><th>@L["p_th2"]</th><th>@L["p_th3"]</th></tr></thead>
+            <tbody>
+                <tr><td>@L["p_r1"]</td><td>@L["p_r1p"]</td><td>@L["p_r1n"]</td></tr>
+                <tr><td>@L["p_r2"]</td><td>@L["p_r2p"]</td><td>@L["p_r2n"]</td></tr>
+                <tr><td>@L["p_r3"]</td><td>@L["td"]</td><td>@L["p_r3n"]</td></tr>
+                <tr><td>@L["p_r4"]</td><td>@L["p_r4p"]</td><td>@L["p_r4n"]</td></tr>
+            </tbody>
+        </table>
+        <p class="note" style="margin-top:10px">@L["p_note"]</p>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="wrap">
+        <p class="eyebrow">@L["q_eyebrow"]</p>
+        <h2>@L["q_h2"]</h2>
+        <p class="lead">@L["q_lead"]</p>
+
+        <form @onsubmit="SubmitAsync" @onsubmit:preventDefault>
+            <div class="row2">
+                <label>@L["q_from"] <input type="date" @bind="_from" @bind:after="OnDatesChanged" min="@Today" required></label>
+                <label>@L["q_to"] <input type="date" @bind="_to" @bind:after="OnDatesChanged" min="@(_from?.ToString("yyyy-MM-dd") ?? Today)" required></label>
+            </div>
+            <label>@L["q_guests"]
+                <select @bind="_guests">
+                    @for (var n = 2; n <= 10; n++)
+                    {
+                        <option value="@n">@n</option>
+                    }
+                </select>
+            </label>
+            <div class="estimate" aria-live="polite">@EstimateText()</div>
+            <label>@L["q_name"] <input type="text" @bind="_name" autocomplete="name" required></label>
+            <label>@L["q_phone"] <input type="tel" @bind="_phone" autocomplete="tel"></label>
+            <label>@L["q_msg"] <textarea @bind="_message" rows="4" placeholder="@L["q_msgph"]"></textarea></label>
+            <button class="btn" type="submit">@L["btn_inq"]</button>
+            <p class="note">@L["q_privacy"]</p>
+        </form>
+
+        <div style="margin-top:20px"><OpenWebButton Page="cenik.html#poptavka" /></div>
+    </div>
+</section>
+
+@code {
+    private DateOnly? _from;
+    private DateOnly? _to;
+    private int _guests = 2;
+    private string _name = "";
+    private string _phone = "";
+    private string _message = "";
+    private PriceEstimate _estimate = new(EstimateStatus.Empty, 0, 0);
+
+    private static string Today => DateOnly.FromDateTime(DateTime.Today).ToString("yyyy-MM-dd");
+
+    private void OnDatesChanged()
+    {
+        if (_from is { } f && (_to is null || _to <= f))
+            _to = f.AddDays(Calculator.Options.MinNights);
+
+        _estimate = Calculator.Calculate(_from, _to);
+    }
+
+    private MarkupString EstimateText() => _estimate.Status switch
+    {
+        EstimateStatus.InvalidRange => new MarkupString(L["est_order"]),
+        EstimateStatus.BelowMinimum => new MarkupString(L["est_min"].Replace("{min}", Calculator.Options.MinNights.ToString())),
+        EstimateStatus.Ok => new MarkupString(L["est_res"]
+            .Replace("{n}", _estimate.Nights.ToString())
+            .Replace("{nights}", L.Nights(_estimate.Nights))
+            .Replace("{total}", _estimate.Total.ToString("N0", L.Culture))),
+        _ => new MarkupString(L["q_est"])
+    };
+
+    private async Task SubmitAsync()
+    {
+        _estimate = Calculator.Calculate(_from, _to);
+        if (_estimate.Status != EstimateStatus.Ok) return;
+
+        var body = string.Join('\n',
+            $"{L["est_term"]}: {_from:yyyy-MM-dd} – {_to:yyyy-MM-dd} ({_estimate.Nights} {L.Nights(_estimate.Nights)})",
+            $"{L["q_guests"]}: {_guests}",
+            $"{L["est_price"]}: {_estimate.Total:0} {L["est_cur"]}",
+            $"{L["q_name"]}: {_name}",
+            $"{L["q_phone"]}: {_phone}",
+            "",
+            _message);
+
+        await Platform.ComposeEmailAsync(Config.Email, $"{L["est_subj"]} {_from:yyyy-MM-dd}", body);
+    }
+}

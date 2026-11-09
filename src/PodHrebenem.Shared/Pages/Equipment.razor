@@ -1,0 +1,57 @@
+@page "/vybaveni"
+@inherits LocalizedComponentBase
+
+<PageTitle>@L["v_title"]</PageTitle>
+
+<section class="page-head"><div class="wrap">
+    <p class="eyebrow">@L["e_eyebrow"]</p>
+    <h1>@L["v_h1"]</h1>
+    <p class="lead">@L["v_lead"]</p>
+</div></section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="ph tall"><span>@L["v_ph_hot"]</span></div>
+        <h2 style="margin-top:22px">@L["v_wellness"]</h2>
+        <ul class="checks">
+            <li>@Html("v_w1")</li>
+            <li>@Html("v_w2")</li>
+            <li>@L["v_w3"]</li>
+        </ul>
+        <p class="note">@L["v_wnote"]</p>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="wrap">
+        <div class="ph wood tall"><span>@L["v_ph_bed"]</span></div>
+        <h2 style="margin-top:22px">@L["v_sleep"]</h2>
+        <ul class="checks">
+            <li>@Html("v_s1")</li>
+            <li>@L["v_s2"]</li>
+            <li>@L["v_s3"]</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <h2>@L["v_more_h2"]</h2>
+        <div class="grid g3" style="margin-top:18px">
+            <article class="card"><div class="icon" aria-hidden="true">🍳</div><h3>@L["c4t"]</h3><p>@L["v_k"]</p></article>
+            <article class="card"><div class="icon" aria-hidden="true">🚿</div><h3>@L["c6t"]</h3><p>@L["v_bath_p"]</p></article>
+            <article class="card"><div class="icon" aria-hidden="true">🔥</div><h3>@L["c5t"]</h3><p>@L["v_grill_p"]</p></article>
+            <article class="card"><div class="icon" aria-hidden="true">📶</div><h3>@L["v_wifi_t"]</h3><p>@L["v_wifi_p"]</p></article>
+            <article class="card"><div class="icon" aria-hidden="true">🅿️</div><h3>@L["v_park_t"]</h3><p>@L["v_park_p"]</p></article>
+            <article class="card"><div class="icon" aria-hidden="true">🐕</div><h3>@L["v_pets_t"]</h3><p>@L["v_pets_p"]</p></article>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="wrap">
+        <h2>@L["v_cta_h2"]</h2>
+        <p>@L["v_cta_p"]</p>
+        <p><a class="btn light" href="cenik">@L["v_cta_btn"]</a></p>
+    </div>
+</section>

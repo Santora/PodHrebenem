@@ -1,0 +1,53 @@
+name: Deploy PWA to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test
+        run: dotnet test tests/PodHrebenem.Tests/PodHrebenem.Tests.csproj -c Release
+
+      - name: Publish PWA
+        run: dotnet publish src/PodHrebenem.Web/PodHrebenem.Web.csproj -c Release -o publish
+
+      - name: Set base path for the repository sub-folder
+        run: |
+          REPO="/${GITHUB_REPOSITORY#*/}/"
+          sed -i "s|<base href=\"/\" />|<base href=\"${REPO}\" />|" publish/wwwroot/index.html
+          sed -i "s|const base = \"/\";|const base = \"${REPO}\";|" publish/wwwroot/service-worker.published.js
+          cp publish/wwwroot/index.html publish/wwwroot/404.html
+          touch publish/wwwroot/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: publish/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

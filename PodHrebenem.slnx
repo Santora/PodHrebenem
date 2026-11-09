@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PodHrebenem.Shared/PodHrebenem.Shared.csproj" />
+    <Project Path="src/PodHrebenem.Maui/PodHrebenem.Maui.csproj" />
+    <Project Path="src/PodHrebenem.Web/PodHrebenem.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PodHrebenem.Tests/PodHrebenem.Tests.csproj" />
+  </Folder>
+</Solution>

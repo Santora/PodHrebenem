@@ -1,0 +1,38 @@
+@page "/okoli"
+@inherits LocalizedComponentBase
+@inject AppConfig Config
+@inject IPlatformService Platform
+
+<PageTitle>@L["o_title"]</PageTitle>
+
+<section class="page-head"><div class="wrap">
+    <p class="eyebrow">@L["n_around"]</p>
+    <h1>@L["o_h1"]</h1>
+    <p class="lead">@L["o_lead"]</p>
+</div></section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="hint">@L["o_hint"]</div>
+        <div class="grid g3">
+            @foreach (var (icon, n) in Items)
+            {
+                <article class="card"><div class="icon" aria-hidden="true">@icon</div><h3>@L[$"o{n}t"]</h3><p>@L[$"o{n}p"]</p></article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="wrap">
+        <h2>@L["o_map_h2"]</h2>
+        <button type="button" class="btn block" @onclick="() => Platform.OpenUrlAsync(Config.MapsUrl)">🧭 @L["app_navigate"]</button>
+    </div>
+</section>
+
+@code {
+    private static readonly (string Icon, int N)[] Items =
+    {
+        ("🥾", 1), ("🚵", 2), ("⛷️", 3), ("🏔️", 4), ("🍽️", 5), ("👨‍👩‍👧", 6)
+    };
+}

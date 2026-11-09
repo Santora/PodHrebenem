@@ -1,0 +1,30 @@
+@inherits LocalizedLayoutBase
+
+<header class="site-header app-top">
+    <div class="wrap bar">
+        <NavLink class="brand" href="" Match="NavLinkMatch.All">Pod Hřebenem<small>@L["brand_small"]</small></NavLink>
+        <select class="app-lang" aria-label="@L["lang_label"]" value="@L.Language" @onchange="OnLanguage">
+            @foreach (var lang in Localizer.Languages)
+            {
+                <option value="@lang" selected="@(lang == L.Language)">@lang.ToUpperInvariant()</option>
+            }
+        </select>
+    </div>
+</header>
+
+<main class="app-main">
+    @Body
+</main>
+
+<nav class="tabbar" aria-label="@L["nav_label"]">
+    <NavLink href="" Match="NavLinkMatch.All" ActiveClass="active"><span aria-hidden="true">🏡</span>@L["n_home"]</NavLink>
+    <NavLink href="vybaveni" ActiveClass="active"><span aria-hidden="true">♨️</span>@L["n_equip"]</NavLink>
+    <NavLink href="galerie" ActiveClass="active"><span aria-hidden="true">🖼️</span>@L["n_gallery"]</NavLink>
+    <NavLink href="okoli" ActiveClass="active"><span aria-hidden="true">🥾</span>@L["n_around"]</NavLink>
+    <NavLink href="cenik" ActiveClass="active"><span aria-hidden="true">📅</span>@L["n_book"]</NavLink>
+    <NavLink href="kontakt" ActiveClass="active"><span aria-hidden="true">📞</span>@L["n_contact"]</NavLink>
+</nav>
+
+@code {
+    private void OnLanguage(ChangeEventArgs e) => L.SetLanguage(e.Value?.ToString() ?? "cs");
+}

@@ -1,0 +1,33 @@
+@page "/kontakt"
+@inherits LocalizedComponentBase
+@inject AppConfig Config
+@inject IPlatformService Platform
+
+<PageTitle>@L["k_title"]</PageTitle>
+
+<section class="page-head"><div class="wrap">
+    <p class="eyebrow">@L["n_contact"]</p>
+    <h1>@L["k_h1"]</h1>
+    <p class="lead">@L["k_lead"]</p>
+</div></section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="actions-col" style="margin-top:0">
+            <button type="button" class="btn block" @onclick="() => Platform.DialAsync(Config.Phone)">📞 @L["app_call"] @Config.PhoneDisplay</button>
+            <button type="button" class="btn block" @onclick="() => Platform.ComposeEmailAsync(Config.Email, string.Empty, string.Empty)">✉️ @L["app_email"]</button>
+            <button type="button" class="btn ghost block" @onclick="() => Platform.OpenUrlAsync(Config.MapsUrl)">🧭 @L["app_navigate"]</button>
+            <OpenWebButton Page="kontakt.html" />
+        </div>
+
+        <div class="grid" style="gap:14px;margin-top:22px">
+            <div class="card"><h3>@L["k_phone_t"]</h3><p>@Config.PhoneDisplay<br><span class="note">@L["k_phone_n"]</span></p></div>
+            <div class="card"><h3>@L["k_mail_t"]</h3><p>@Config.Email</p></div>
+            <div class="card"><h3>@L["k_addr_t"]</h3><p>@L["f_addr"]<br>@L["k_addr_todo"]</p></div>
+            <div class="card"><h3>@L["k_docs_t"]</h3><p>@L["f_rules"] @L["k_docs_p"]</p></div>
+        </div>
+
+        <h3 style="margin-top:24px">@L["k_how_h3"]</h3>
+        <p>@L["k_how_p"]</p>
+    </div>
+</section>

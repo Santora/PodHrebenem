@@ -1,0 +1,84 @@
+@page "/"
+@inherits LocalizedComponentBase
+
+<PageTitle>@L["i_title"]</PageTitle>
+
+<section class="hero">
+    <div class="wrap">
+        <p class="eyebrow">@L["hero_eyebrow"]</p>
+        <h1>@L["hero_h1a"]<br>Pod Hřebenem</h1>
+        <p>@L["hero_p"]</p>
+        <div class="actions-col">
+            <a class="btn block" href="cenik">@L["btn_dates"]</a>
+            <a class="btn light block" href="galerie">@L["btn_gallery"]</a>
+        </div>
+    </div>
+    <span class="hero-note">@L["hero_note"]</span>
+</section>
+
+<div class="wrap">
+    <div class="facts" aria-label="@L["facts_aria"]">
+        <div class="fact"><b>10</b><span>@L["fact1"]</span></div>
+        <div class="fact"><b>3</b><span>@L["fact2"]</span></div>
+        <div class="fact"><b>6</b><span>@L["fact3"]</span></div>
+        <div class="fact"><b>@L["fact4n"]</b><span>@L["fact4"]</span></div>
+    </div>
+</div>
+
+<section class="section">
+    <div class="wrap">
+        <p class="eyebrow">@L["w_eyebrow"]</p>
+        <h2>@L["w_h2"]</h2>
+        <p class="lead">@L["w_lead"]</p>
+        <ul class="checks">
+            <li>@L["w_c1"]</li>
+            <li>@L["w_c2"]</li>
+            <li>@L["w_c3"]</li>
+            <li>@L["w_c4"]</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="wrap">
+        <p class="eyebrow">@L["e_eyebrow"]</p>
+        <h2>@L["e_h2"]</h2>
+        <div class="grid g3" style="margin-top:20px">
+            @foreach (var (icon, n) in Cards)
+            {
+                <article class="card"><div class="icon" aria-hidden="true">@icon</div><h3>@L[$"c{n}t"]</h3><p>@L[$"c{n}p"]</p></article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <p class="eyebrow">@L["f_eyebrow"]</p>
+        <h2>@L["f_h2"]</h2>
+        @for (var i = 1; i <= 4; i++)
+        {
+            var n = i;
+            <details><summary>@L[$"faq{n}q"]</summary><p>@L[$"faq{n}a"]</p></details>
+        }
+    </div>
+</section>
+
+<section class="cta">
+    <div class="wrap">
+        <h2>@L["cta_h2"]</h2>
+        <p>@L["cta_p"]</p>
+        <p><a class="btn light" href="cenik">@L["btn_inq"]</a></p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap"><OpenWebButton /></div>
+</section>
+
+@code {
+    private static readonly (string Icon, int N)[] Cards =
+    {
+        ("♨️", 1), ("🧖", 2), ("🛏️", 3), ("🍳", 4), ("🔥", 5), ("🚿", 6)
+    };
+}

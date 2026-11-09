@@ -1,0 +1,38 @@
+@page "/galerie"
+@inherits LocalizedComponentBase
+
+<PageTitle>@L["g_title"]</PageTitle>
+
+<section class="page-head"><div class="wrap">
+    <p class="eyebrow">@L["n_gallery"]</p>
+    <h1>@L["g_h1"]</h1>
+    <p class="lead">@L["g_lead"]</p>
+</div></section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="gallery">
+            @foreach (var (css, key) in Tiles)
+            {
+                <div class="ph @css" role="img" aria-label="@L[key]"><span>@L[key]</span></div>
+            }
+        </div>
+        <p class="note" style="margin-top:16px">@Html("g_note")</p>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="wrap">
+        <h2>@L["g_cta_h2"]</h2>
+        <p>@L["g_cta_p"]</p>
+        <p><a class="btn light" href="cenik">@L["v_cta_btn"]</a></p>
+    </div>
+</section>
+
+@code {
+    private static readonly (string Css, string Key)[] Tiles =
+    {
+        ("wide", "gi1"), ("wood", "gi2"), ("water", "gi3"), ("wood", "gi4"), ("", "gi5"),
+        ("wide", "gi6"), ("water", "gi7"), ("", "gi8"), ("wood", "gi9")
+    };
+}
