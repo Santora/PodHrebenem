@@ -6,7 +6,7 @@ public sealed class AppConfig
     /// <summary>Adresa webové verze bez lomítka na konci (čeština v kořeni, ostatní jazyky ve složkách en/de/pl/sk).</summary>
     public string WebsiteUrl { get; init; } = "https://santora.github.io/chalupa-web-navrh";
 
-    public string Email { get; init; } = "info@example.cz";
+    public string Email { get; init; } = "jirisantora@gmail.com";
     public string Phone { get; init; } = "+420000000000";
     public string PhoneDisplay { get; init; } = "+420 000 000 000";
 
